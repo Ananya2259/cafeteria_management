@@ -1,0 +1,25 @@
+<nav class="navbar" >
+        <div class="container">
+            <div class="logo">
+                <a class="logolink" href="">Picture</a>
+            </div>
+            <div id="mainListDiv" class="main_list">
+                <ul class="navlinks">
+                    <li class ="navlist"><a  class="navlistlink" href="#">Demo</a></li>
+                    <li class ="navlist"><a  class="navlistlink" href="#">Demo</a></li>
+                    <li class ="navlist"><a   class="navlistlink"href="#">Demo</a></li>
+                    <li class ="navlist"><a   class="navlistlink"href="#">Demo</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+<section>
+   <h1 class="MenuPage-title">Menu</h1>
+  <%= form_with(url: menu_categories_path, method: "post", class: "Addplmenucategory") do %>
+   <%= text_field_tag "name", nil, class: "AddMenucategory-text", placeholder: "New category", autofocus: "autofocus" %>
+   <%= submit_tag "Add", class: "AddMenucategory-submit" %>
+   <% end %>
+</section>
+<%= render partial: "menucategories-section" %>

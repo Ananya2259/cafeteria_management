@@ -1,0 +1,24 @@
+<body class = "Signup">
+  <h1 class="NewUsers-title">Sign Up</h1>
+<section class="UsersNew">
+    <%= form_with url: users_path, class: "Form-style" do |form| %>
+     <div class="Form-section">
+       <i class="far fa-user"></i>
+       <%= form.text_field :name, class: "Form-input-style", placeholder: "Name" %>
+     </div>
+    <div class="Form-section">
+       <%= form.hidden_field :role, :value => role %>
+    </div>
+    <div class="Form-section">
+      <%= form.email_field :email, class: "Form-input-style", placeholder: "Email" %>
+    </div>
+    <div class="Form-section">
+      <%= form.password_field :password, class: "Form-input-style", placeholder: "Password" %>
+    </div>
+    <div class ="Form-section">
+      <%= form.submit "Sign up", class: "Submit-style" %>
+    </div>
+<% end %>
+  </section>
+  </body>
+   <script src="https://kit.fontawesome.com/0d098bd6e3.js" crossorigin="anonymous"></script>

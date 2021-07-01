@@ -1,0 +1,48 @@
+<section class="menucategories-section">
+   <ul>
+      <% MenuCategory.all.each.with_index do |menu_category, index| %>
+      <p> <%= menu_category.name %> </p>
+      <div class="MenuCategory">
+         <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "DeleteMenucategory-text", method: "delete") do %>
+         <%= submit_tag "delete", class: "deleteMenucategory-submit" %>
+         <% end %>
+         <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "EditMenucategory-text", method: "patch") do %>
+         <%= text_field_tag "name", nil, class: "editMenucategory-text", placeholder: "New category", autofocus: "autofocus" %>
+         <%= submit_tag "Edit", class: "editMenucategory-submit" %>
+         <% end %>
+      </div>
+      <button onclick="AddItemsdisplay ('<%= index + 1 %>')">Add Items</button>
+       <div id="MenuItemList<%= index +1 %>" style="display:none">
+       <%= render partial: "menuitems", locals: { category_id: menu_category.id } %>
+      </div>
+      <ul>
+         <% MenuCategory.find(menu_category.id).menu_items.all.each do |menu_item| %>
+           <p> <%= menu_item.name %> ~ <%= menu_item.description %> ~ <%= menu_item.price %></p>
+           <%= form_with(url: "/menu_items/#{menu_item.id}", class: "DeleteMenuitem-text", method: "delete") do %>
+             <%= submit_tag "delete", class: "deleteMenuitem-submit" %>
+           <% end %>
+           <div class="EditMenuItems">
+              <%= form_with(url: "/menu_items/#{menu_item.id}", class: "EditMenuitem-text", method: "patch") do %>
+                  <%= text_field_tag "name", nil, class: "EditMenuitem-text", placeholder: "New item", autofocus: "autofocus" %>
+                  <%= text_field_tag "description", nil, class: "EditMenuItem-text", placeholder: "Description", autofocus: "autofocus" %>
+                  <%= number_field_tag "price", nil, placeholder: "Price", step: 2 %>
+                  <%= hidden_field_tag(:menu_category_id, menu_category.id) %>
+                  <%= submit_tag "Edit", class: "editMenuitem-submit" %>
+              <% end %>
+            </div>
+         <% end %>
+      </ul>
+    <% end %>
+</ul>
+</section>
+<script>
+   function AddItemsdisplay(index) {
+       var item = document.getElementById("MenuItemList"+index);
+       if(item.style.display == "none")
+       {
+          item.style.display = "block"
+       }else{
+          item.style.display = "none"
+       }
+   }
+</script>
