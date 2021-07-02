@@ -3,11 +3,13 @@
 one:
   order_id: 
   menu_item_id: 
+  menu_item_name: MyString
   price: 1.5
   quantity: 1
 
 two:
   order_id: 
   menu_item_id: 
+  menu_item_name: MyString
   price: 1.5
   quantity: 1

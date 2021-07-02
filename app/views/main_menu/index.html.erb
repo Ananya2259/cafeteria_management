@@ -1,6 +1,7 @@
 <ul>
  <p>Menu categories<p>
   <% MenuCategory.all.each do |menucategory| %>
+  <% if menucategory.menu_items.present? %>
     <li><span><%= menucategory.name %></span>
       <ul>
         <% menucategory.menu_items.each do |menuitems| %>
@@ -23,6 +24,7 @@
         <% end %>
       </ul>
     </li>
+    <% end %>
   <% end %>
 </ul>
 <% CartItem.where(user_id: session[:current_user_id]).all.each do |cartitem| %>
@@ -32,6 +34,42 @@
 <%= menuitem.price %><br>
 <% end %>
 <%= CartItem.cart_total(session[:current_user_id]) %>
-<%= form_with(url: orders_path, method: "post") do %>
-    <%= submit_tag "Checkout", class: "Checkout" %>
+<!-- Button trigger modal -->
+<% if @current_user.cart_items.present? %>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Checkout
+</button>
 <% end %>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Order Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% @current_user.cart_items.all.each do |cartitem| %>
+        <% menu_detail = cartitem.menu_item %>
+        <%= menu_detail.name %>
+        <%= cartitem.quantity %>
+        <%= cartitem.price %><br>
+        <% end %>
+        <p>Total: <%= CartItem.cart_total(session[:current_user_id]) %></p>
+      </div>
+        <%= form_with(url: addresses_path, method: "post") do |form| %>
+
+
+        <div class="mb-3">
+           <%= form.label "address-text", "address", class: "col-form-label" %>
+             <%= form.text_area :address, id: "address-text", class: "form-control", :required => @current_user.addresses ? true : false %>
+        </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <%= form.submit "Confirm Order", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
