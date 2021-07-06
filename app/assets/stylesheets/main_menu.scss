@@ -1,0 +1,10 @@
+.modal-backdrop.show {
+  opacity: 0;
+  z-index: 1;
+  width: 100%;
+}
+
+.exampleModal {
+  position: absolute;
+  left: 50%;
+}

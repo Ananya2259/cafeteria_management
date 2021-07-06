@@ -13,3 +13,6 @@ global.$ = jQuery
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+
+require("packs/sidebar.js")

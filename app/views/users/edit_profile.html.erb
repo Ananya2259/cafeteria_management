@@ -1,0 +1,75 @@
+<section style="display:flex;justify-content:space-between;">
+<div>
+      <div class="shadow-lg p-3 mb-5 bg-body rounded"style="width:600px;margin:0 auto;">
+      <div class="shadow-sm p-3 mb-5 bg-body rounded"style="height:400px;margin:0 auto;">
+      <p>Name:   <%= @current_user.name %></p>
+   <p>Email: <%= @current_user.email %></p>
+    <p>Address:
+    <% if @current_user.addresses.any? %>
+     <%= @current_user.addresses.last.address %>
+     <% end %>
+     </p>
+      <button class="btn btn-success" onclick="display_content('hide_element_userdetail','hide_element_password')">Change Profile</button>
+      <button  class="btn btn-success" onclick="display_content('hide_element_password','hide_element_userdetail')">Change password</button>
+      </div>
+      </div>
+</div>
+
+<div>
+<div id="hide_element_userdetail" style="display:none">
+    <div class="shadow-lg p-3 mb-5 bg-body rounded"style="width:600px;margin:0 auto;">
+      <div class="shadow-sm p-3 mb-5 bg-body rounded"style="height:400px;margin:0 auto;">
+        <%= form_with url: update_profile_path, class: "row g-3", method: :put do |form| %>
+              <div class="col-md-6">
+                <%= form.label :name, "Name", class: "form-label" %>
+                  <%= form.text_field :name, class: "form-control", placeholder: "Name" %>
+              </div>
+              <div class="col-md-6">
+                <%= form.label :email, "Email", class: "form-label" %>
+                <%= form.email_field :name, class: "form-control", placeholder: "Email" %>
+              </div>
+              <div class="col-12">
+              <%= form.label :address, "Address", class: "form-label" %>
+                <%= form.text_area :name, class: "form-control", placeholder: "Address", :minlength => 25 %>
+              </div>
+              <div class="col-12">
+                <%= form.label :password, "Password", class: "form-label" %>
+                <%= form.password_field :password, class: "form-control", placeholder: "Password", :required => true, :minlength => 8 %>
+              </div>
+              <div class="col-12">
+                <%= form.submit " Edit", class: "btn btn-primary" %>
+              </div>
+        <% end %>
+      </div>
+    </div>
+</div>
+
+<div id="hide_element_password" style="display:none">
+    <div class="shadow-lg p-3 mb-5 bg-body rounded"style="width:600px;margin:0 auto;">
+      <div class="shadow-sm p-3 mb-5 bg-body rounded"style="height:400px;margin:0 auto;">
+    <%= form_with url: update_profile_path, class: "row g-3", method: :put do |form| %>
+      <div class="col-12">
+        <%= form.label :password, "Current Password", class: "form-label" %>
+        <%= form.password_field :password, class: "form-control", placeholder: "Current Password", :required => true, :minlength => 8 %>
+      </div>
+      <div class="col-12">
+        <%= form.label :new_password, "New Password", class: "form-label" %>
+        <%= form.password_field :new_password, class: "form-control", placeholder: "New Password", :required => true, :minlength => 8 %>
+      </div>
+      <div class="col-12">
+        <%= form.submit " Edit", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+      </div>
+    </div>
+</div>
+</div>
+</section>
+<script>
+  function display_content(display_content,hide_content) {
+    var displayc = document.getElementById(display_content)
+    var hidec = document.getElementById(hide_content)
+    displayc.style.display = "block"
+    hidec.style.display = "none"
+  }
+</script>

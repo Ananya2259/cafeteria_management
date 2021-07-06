@@ -7,4 +7,10 @@ class OrdersController < ApplicationController
     order.save!
     redirect_to order_items_path(order_id: order.id)
   end
+
+  def update
+    order_id = params[:order_id]
+    Order.find(order_id).update(status: "Delivered")
+    redirect_to orders_index_path
+  end
 end

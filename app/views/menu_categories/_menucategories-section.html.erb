@@ -1,48 +1,124 @@
 <section class="menucategories-section">
-   <ul>
-      <% MenuCategory.all.each.with_index do |menu_category, index| %>
+<div class="accordion accordion-flush" id="accordionFlushExample">
+  <% MenuCategory.order("id").all.each.with_index do |menu_category, index| %>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-heading<%= menu_category.name %>">
+      <div class="accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= menu_category.name %>" style="color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;" aria-expanded="false" aria-controls="flush-collapse<%= menu_category.name %>">
       <p> <%= menu_category.name %> </p>
-      <div class="MenuCategory">
-         <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "DeleteMenucategory-text", method: "delete") do %>
-         <%= submit_tag "delete", class: "deleteMenucategory-submit" %>
-         <% end %>
-         <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "EditMenucategory-text", method: "patch") do %>
-         <%= text_field_tag "name", nil, class: "editMenucategory-text", placeholder: "New category", autofocus: "autofocus" %>
-         <%= submit_tag "Edit", class: "editMenucategory-submit" %>
-         <% end %>
-      </div>
-      <button onclick="AddItemsdisplay ('<%= index + 1 %>')">Add Items</button>
-       <div id="MenuItemList<%= index +1 %>" style="display:none">
-       <%= render partial: "menuitems", locals: { category_id: menu_category.id } %>
-      </div>
-      <ul>
-         <% MenuCategory.find(menu_category.id).menu_items.all.each do |menu_item| %>
-           <p> <%= menu_item.name %> ~ <%= menu_item.description %> ~ <%= menu_item.price %></p>
-           <%= form_with(url: "/menu_items/#{menu_item.id}", class: "DeleteMenuitem-text", method: "delete") do %>
-             <%= submit_tag "delete", class: "deleteMenuitem-submit" %>
-           <% end %>
-           <div class="EditMenuItems">
-              <%= form_with(url: "/menu_items/#{menu_item.id}", class: "EditMenuitem-text", method: "patch") do %>
-                  <%= text_field_tag "name", nil, class: "EditMenuitem-text", placeholder: "New item", autofocus: "autofocus" %>
-                  <%= text_field_tag "description", nil, class: "EditMenuItem-text", placeholder: "Description", autofocus: "autofocus" %>
+      <div>
+      <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "EditMenucategory-text", method: "patch") do %>
+                  <%= hidden_field_tag "status", menu_category.status %>
+                  <%= submit_tag menu_category.status, class: "btn btn-primary" %>
+                <% end %>
+
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="fas fa-edit"></i>
+          </button>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "EditMenucategory-text", method: "patch") do %>
+                <div class="mb-3">
+                  <%= text_field_tag "name", nil, class: "editMenucategory-text", placeholder: "Edit category", autofocus: "autofocus" %>
+                </div>
+                <div class="modal-footer">
+                  <%= submit_tag "Edit", class: "btn btn-primary" %>
+                </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+
+          <%= form_with(url: "/menu_categories/#{menu_category.id}", class: "DeleteMenucategory-text", method: "delete") do %>
+            <%= button_tag type: "submit", class: "button my-button", id: "register-button" do %>
+            <i class="fas fa-trash-alt" aria-hidden="true"></i>
+            <% end %>
+          <% end %>
+
+
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#exampleModal<%= menu_category.name %>">
+            <i class="far fa-plus-square"></i>
+          </button>
+          <div class="modal fade" id="exampleModal<%= menu_category.name %>" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Items</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <%= form_with(url: "/menu_items", method: "post", class: "AddMenuItem") do %>
+                <div class="mb-3">
+                  <%= text_field_tag "name", nil, class: "AddMenuItem-text", placeholder: "Item name", autofocus: "autofocus" %>
+                  <%= text_field_tag "description", nil, class: "AddMenuItem-text", placeholder: "Description", autofocus: "autofocus" %>
                   <%= number_field_tag "price", nil, placeholder: "Price", step: 2 %>
                   <%= hidden_field_tag(:menu_category_id, menu_category.id) %>
-                  <%= submit_tag "Edit", class: "editMenuitem-submit" %>
-              <% end %>
+                </div>
+                <div class="modal-footer">
+                  <%= submit_tag "Add", class: "btn btn-primary" %>
+                </div>
+                <% end %>
+              </div>
             </div>
-         <% end %>
-      </ul>
-    <% end %>
-</ul>
-</section>
-<script>
-   function AddItemsdisplay(index) {
-       var item = document.getElementById("MenuItemList"+index);
-       if(item.style.display == "none")
-       {
-          item.style.display = "block"
-       }else{
-          item.style.display = "none"
-       }
-   }
-</script>
+          </div>
+      </div>
+   </div>
+  </h2>
+  </div>
+
+            <div id="flush-collapse<%= menu_category.name %>" class="accordion-collapse collapse"
+              aria-labelledby="flush-heading<%= menu_category.name %>" data-bs-parent="#accordionFlushExample">
+          <% MenuCategory.find(menu_category.id).menu_items.all.each do |menu_item| %>
+              <div class="accordion-body">
+                <p> <%= menu_item.name %> ~ <%= menu_item.description %> ~ <%= menu_item.price %></p>
+                <div>
+
+
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                      data-bs-target="#exampleModaledit<%= menu_item.id %>">
+                      <i class="far fa-edit"></i>
+                    </button>
+                    <div class="modal fade" id="exampleModaledit<%= menu_item.id %>" tabindex="-1"
+                      aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <%= form_with(url: "/menu_items/#{menu_item.id}", class: "EditMenuitem-text", method: "patch") do %>
+                          <div class="mb-3">
+                            <%= text_field_tag "name", nil, class: "EditMenuitem-text", placeholder: "New item", autofocus: "autofocus" %>
+                            <%= text_field_tag "description", nil, class: "EditMenuItem-text", placeholder: "Description", autofocus: "autofocus" %>
+                            <%= number_field_tag "price", nil, placeholder: "Price", step: 2 %>
+                            <%= hidden_field_tag(:menu_category_id, menu_category.id) %>
+                          </div>
+                          <div class="modal-footer">
+                            <%= submit_tag "Edit", class: "btn btn-primary" %>
+                          </div>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                    <%= form_with(url: "/menu_items/#{menu_item.id}", class: "DeleteMenuitem-text", method: "delete") do %>
+                      <%= button_tag type: "submit", class: "button my-button", id: "register-button" do %>
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                      <% end %>
+                    <% end %>
+                </div>
+              </div>
+          <% end %>
+            </div>
+     </div>
+        <% end %>
+  </div>
+  </section>
+  <script src="https://kit.fontawesome.com/0d098bd6e3.js" crossorigin="anonymous"></script>

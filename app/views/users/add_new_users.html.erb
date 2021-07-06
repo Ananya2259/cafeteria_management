@@ -1,0 +1,33 @@
+<body class = "Signup">
+  <h1 class="NewUsers-title">Create <%= role %></h1>
+<section class="UsersNew">
+    <%= form_with url: users_path, class: "Form-style", method: :post do |form| %>
+     <div class="Form-section">
+       <i class="far fa-user"></i>
+       <%= form.text_field :name, class: "Form-input-style", placeholder: "Name", :required => true %>
+     </div>
+    <div class="Form-section">
+       <%= form.hidden_field :role, :value => role %>
+    </div>
+    <div class="Form-section">
+       <%= form.hidden_field :created_by_admin, :value => true %>
+    </div>
+    <div class="Form-section">
+      <%= form.email_field :email, class: "Form-input-style", placeholder: "Email", :required => true %>
+    </div>
+
+    <div>
+        <%= form.text_area :address, class: "Form-input-style", placeholder: "Address", :required => true, :minlength => 25 %>
+    </div>
+
+
+    <div class="Form-section">
+      <%= form.password_field :password, class: "Form-input-style", placeholder: "Password", :required => true, :minlength => 8 %>
+    </div>
+    <div class ="Form-section">
+      <%= form.submit "Create", class: "Submit-style" %>
+    </div>
+<% end %>
+  </section>
+  </body>
+   <script src="https://kit.fontawesome.com/0d098bd6e3.js" crossorigin="anonymous"></script>

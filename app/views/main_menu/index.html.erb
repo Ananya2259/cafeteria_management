@@ -1,75 +1,131 @@
-<ul>
- <p>Menu categories<p>
-  <% MenuCategory.all.each do |menucategory| %>
-  <% if menucategory.menu_items.present? %>
-    <li><span><%= menucategory.name %></span>
-      <ul>
-        <% menucategory.menu_items.each do |menuitems| %>
-          <li><%= menuitems.name %></li>
-          <li><%= menuitems.description %></li>
-          <li><%= menuitems.price %></li>
+<article style="display:flex;justify-content:space-between">
+  <section style="width:750px;"  class="shadow-lg p-3 mb-5 bg-body rounded">
+    <% MenuCategory.order("id").all.each do |menucategory| %>
+    <% if menucategory.menu_items.present? %>
+    <h1><%= menucategory.name.capitalize %></h1>
+    <% menucategory.menu_items.in_groups_of(3, false).each do |group| %>
+    <div class="row">
+      <% group.each do |menuitems| %>
 
-          <% if CartItem.where(user_id: session[:current_user_id]).find_by(menu_item_id: menuitems.id) %>
-            <%= form_with(url: cart_item_path(menuitems.id, user_id: session[:current_user_id], quantity: 1), method: "patch") do %>
-               <%= submit_tag "+", class: "AddToCart" %>
-            <% end %>
-            <%= form_with(url: cart_item_path(menuitems.id, user_id: session[:current_user_id], quantity: -1), method: "patch") do %>
-              <%= submit_tag "-", class: "AddToCart" %>
-            <% end %>
-          <% else %>
+      <div class="col-md-4">
+        <div class="card shadow-lg p-3 mb-5 bg-body rounded" style="width: 13rem;">
+          <img src="food.png" class="card-img-top" alt="...">
+          <div class="card-body">
+            <p class="card-text"><%= menuitems.name %><br><%= menuitems.description %><br><%= menuitems.price %></p>
+              <% if menucategory.status == "active" %>
+            <% if CartItem.where(user_id: session[:current_user_id]).find_by(menu_item_id: menuitems.id) %>
+            <div style="display:flex;">
+              <%= form_with(url: cart_item_path(menuitems.id, user_id: session[:current_user_id], quantity: -1), method: "patch") do %>
+                 <%= button_tag type: "submit", class: "btn btn-danger", id: "register-button" do %>
+                     <i class="fas fa-minus-square" aria-hidden="true"></i>
+                 <% end %>
+              <% end %>
+              <span style="width:100px"></span>
+              <%= form_with(url: cart_item_path(menuitems.id, user_id: session[:current_user_id], quantity: 1), method: "patch") do %>
+                 <%= button_tag type: "submit", class: "btn btn-danger", id: "register-button" do %>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                 <% end %>
+              <% end %>
+            </div>
+            <% else %>
+
             <%= form_with(url: cart_items_path(menu_item_id: menuitems.id, user_id: session[:current_user_id]), method: "post") do %>
-            <%= submit_tag "ADD", class: "AddToCart" %>
+            <%= button_tag type: "submit", class: "btn btn-success", id: "register-button" do %>
+            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
             <% end %>
-          <% end %>
-        <% end %>
-      </ul>
-    </li>
-    <% end %>
-  <% end %>
-</ul>
-<% CartItem.where(user_id: session[:current_user_id]).all.each do |cartitem| %>
-<% menuitem = MenuItem.find(cartitem.menu_item_id) %>
-<%= menuitem.name %>~
-<%= cartitem.quantity %>~
-<%= menuitem.price %><br>
-<% end %>
-<%= CartItem.cart_total(session[:current_user_id]) %>
-<!-- Button trigger modal -->
-<% if @current_user.cart_items.present? %>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Checkout
-</button>
-<% end %>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Order Confirmation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <% @current_user.cart_items.all.each do |cartitem| %>
-        <% menu_detail = cartitem.menu_item %>
-        <%= menu_detail.name %>
-        <%= cartitem.quantity %>
-        <%= cartitem.price %><br>
-        <% end %>
-        <p>Total: <%= CartItem.cart_total(session[:current_user_id]) %></p>
-      </div>
-        <%= form_with(url: addresses_path, method: "post") do |form| %>
-
-
-        <div class="mb-3">
-           <%= form.label "address-text", "address", class: "col-form-label" %>
-             <%= form.text_area :address, id: "address-text", class: "form-control", :required => @current_user.addresses ? true : false %>
+            <% end %>
+            <% end %>
+            <% else %>
+                <button type="button" class="btn btn-outline-danger" disabled>Currently unavailable</button>
+            <% end %>
+          </div>
         </div>
+      </div>
+      <% end %>
+    </div>
+    <% end %>
+    <% end %>
+    <% end %>
+  </section>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <%= form.submit "Confirm Order", class: "btn btn-primary" %>
-        <% end %>
+
+  <section style="width:400px;height:480px;margin-left:50px" class="shadow-lg p-3 mb-5 bg-body rounded sticky-top">
+      <h1>Cart</h1>
+      <% if !@current_user.cart_items.present? %>
+         <img src="delivery.gif" style="width:370px ">
+         <h1 style="width:250px;color:grey;margin:20px auto">On my way!!!<h1>
+      <% else %>
+      <div class="table-responsive overflow-auto" style="height:300px">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th class="shadow p-3 mb-5 bg-body rounded"scope="col">Item</th>
+            <th class="shadow p-3 mb-5 bg-body rounded"scope="col">Quantity</th>
+            <th class="shadow p-3 mb-5 bg-body rounded"scope="col">Price</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% CartItem.where(user_id: session[:current_user_id]).all.each do |cartitem| %>
+          <% menuitem = MenuItem.find(cartitem.menu_item_id) %>
+          <tr >
+            <td class="shadow p-3 mb-5 bg-body rounded"> <%= menuitem.name %></td>
+            <td class="shadow p-3 mb-5 bg-body rounded"><%= cartitem.quantity %></td>
+            <td class="shadow p-3 mb-5 bg-body rounded">₹<%= menuitem.price %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      </div>
+      <!-- Button trigger modal -->
+      <% if @current_user.cart_items.present? %>
+      <span style="margin-left:100px"><strong> Cart subtotal</strong>(<%= CartItem.where(user_id: session[:current_user_id]).all.count %> item) : </span><span style="color:#B12704;font-weight:700">₹<%= CartItem.cart_total(session[:current_user_id]) %></span><br>
+
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-top:20px;margin-left:260px;">
+        Checkout
+      </button>
+      <% end %>
+      <!-- Modal -->
+        <div class="modal fade" id="exampleModal" style=" position:fixed;
+  left: 33%;top:10%;width:500px" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Order Confirmation</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <% @current_user.cart_items.all.each do |cartitem| %>
+              <% menu_detail = cartitem.menu_item %>
+              <%= menu_detail.name %>
+              <%= cartitem.quantity %>
+              <%= cartitem.price %><br>
+              <% end %>
+          <p>Total: <%= CartItem.cart_total(session[:current_user_id]) %></p>
+
+          <%= form_with(url: addresses_path, method: "post") do |form| %>
+
+
+          <div >
+            <%= form.label "address-text", "address", class: "col-form-label" %>
+            <% location_status = @current_user.addresses.present? ? false : true %>
+            <%= form.text_area :address, id: "address-text", class: "form-control", :placeholder => @current_user.addresses.present? ? @current_user.addresses.last.address : "Enter Address", :required => location_status, :minlength => 25 %>
+          </div>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <%= form.submit "Confirm Order", class: "btn btn-primary" %>
+            <% end %>
+          </div>
+          </div>
+
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+
+
+  <% end %>
+  </section>
+</article>
+<script src="https://kit.fontawesome.com/0d098bd6e3.js" crossorigin="anonymous"></script>

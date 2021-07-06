@@ -28,7 +28,16 @@ class MenuItemsController < ApplicationController
   def update
     id = params[:id]
     menu = MenuItem.find(id)
-    menu.update(name: params[:name])
+    if params[:name].present?
+      menu.update(name: params[:name])
+    end
+    if params[:description].present?
+      menu.update(description: params[:description])
+    end
+    if params[:price].present?
+      menu.update(price: params[:price])
+    end
+
     redirect_to menu_categories_path
   end
 end

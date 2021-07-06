@@ -24,7 +24,15 @@ class MenuCategoriesController < ApplicationController
   def update
     id = params[:id]
     menu = MenuCategory.find(id)
-    menu.update(name: params[:name])
+    if params[:status].present?
+      if params[:status] == "active"
+        menu.update(status: "inactive")
+      else
+        menu.update(status: "active")
+      end
+    else
+      menu.update(name: params[:name])
+    end
     redirect_to menu_categories_path
   end
 end

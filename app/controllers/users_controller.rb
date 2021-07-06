@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :ensure_user_logged_in
+  skip_before_action :ensure_user_logged_in, except: [:index, :edit_profile]
 
   def new
     if User.any?
@@ -9,9 +9,13 @@ class UsersController < ApplicationController
     end
   end
 
-  # def index
-  #   render plain: User.all.map { |user| user.to_user_details }.join("\n")
-  # end
+  def index
+    render "user_display"
+  end
+
+  def add_user
+    render "add_new_users", :locals => { role: params[:role] }
+  end
 
   def create
     user = User.new(
@@ -21,11 +25,70 @@ class UsersController < ApplicationController
       password: params[:password],
     )
     if user.save
-      session[:current_user_id] = user.id
-      redirect_to "/"
+      if params[:created_by_admin] == "true"
+        Address.create!(address: params[:address], user_id: user.id)
+        redirect_to users_path
+      else
+        session[:current_user_id] = user.id
+        redirect_to "/"
+      end
     else
       redirect_to new_user_path
       flash[:error] = user.errors.full_messages.join(", ")
     end
+  end
+
+  def delete
+    User.find(params[:user_id]).destroy
+    redirect_to users_path
+  end
+
+  def edit_user
+    render "edit_user", :locals => { user_id: params[:user_id] }
+  end
+
+  def update_user
+    id = params[:user_id]
+    user = User.find(id)
+    if params[:name].present?
+      user.update(name: params[:name])
+    end
+    if params[:email].present?
+      user.update(email: params[:email])
+    end
+    if params[:address].present?
+      user.update(address: params[:address])
+    end
+
+    redirect_to users_path
+  end
+
+  def edit_profile
+    render "edit_profile"
+  end
+
+  def update_profile
+    user = User.find(session[:current_user_id])
+    address = Address.where(user_id: user.id).last
+    success = ""
+    if params[:name].present?
+      user.update(name: params[:name])
+      success = "Your attempt was sucessfull."
+    end
+    if params[:email].present?
+      user.update(email: params[:email])
+      success = "Your attempt was sucessfull."
+    end
+    if params[:address].present?
+      address.update(address: params[:address])
+      success = "Your attempt was sucessfull."
+    end
+
+    if params[:password].present? && user.authenticate(params[:password])
+      user.update(password: params[:new_password])
+      success = "Your attempt was sucessfull."
+    end
+    flash[:success] = success
+    redirect_to main_menu_index_path
   end
 end

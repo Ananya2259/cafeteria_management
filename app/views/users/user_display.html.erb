@@ -1,0 +1,50 @@
+<div>
+  <% ["Admin", "clerk", "user"].each do |user| %>
+  <div style="display:flex;align-items:center">
+  <h1><%= user %></h1>
+  <% if user == "Admin" || user == "clerk" %>
+  <%= link_to add_new_user_path(role: user) do %>
+  <i class="fas fa-user-plus" style="margin-left:15px;margin-bottom:5px;margin-top:3px;font-size:20px"></i>
+<% end %>
+  <% end %>
+  </div>
+  <div  style="width:900px">
+  <table class="table table-bordered border border-2">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Address</th>
+        <th> </th>
+      </tr>
+    </thead>
+    <tbody >
+      <% User.where(role: user).all.each do |user_detail| %>
+      <tr>
+        <td><%= user_detail.name %></td>
+        <td><%= user_detail.email %></td>
+        <td>
+        <% if Address.where(user_id: user_detail.id).all.any? %>
+        <%= Address.where(user_id: user_detail.id).all.last.address %>
+        <% end %>
+        </td>
+        <td>
+            <% if user != "user" %>
+            <div style="display:flex">
+              <%= link_to delete_user_path(user_id: user_detail.id), method: :delete do %>
+                <i class="fas fa-user-slash" style="margin-left:15px;margin-bottom:5px;margin-top:3px;font-size:20px"></i>
+              <% end %>
+              <%= link_to edit_user_detail_path(user_id: user_detail.id), method: :get do %>
+                <i class="fas fa-user-edit" style="margin-left:15px;margin-bottom:5px;margin-top:3px;font-size:20px"></i>
+              <% end %>
+              </div>
+            <% end %>
+       </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+  <% end %>
+</div>
+<script src="https://kit.fontawesome.com/0d098bd6e3.js" crossorigin="anonymous"></script>

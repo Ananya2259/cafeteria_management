@@ -1,0 +1,23 @@
+<body class = "Signup">
+  <h1 class="NewUsers-title">Update</h1>
+<section class="UsersNew">
+    <%= form_with url: update_user_detail_path(user_id: user_id), class: "Form-style", method: :put do |form| %>
+     <div class="Form-section">
+       <i class="far fa-user"></i>
+       <%= form.text_field :name, class: "Form-input-style", placeholder: "Name" %>
+     </div>
+    <div class="Form-section">
+      <%= form.email_field :email, class: "Form-input-style", placeholder: "Email" %>
+    </div>
+
+    <div>
+        <%= form.text_area :address, class: "Form-input-style", placeholder: "Address", :minlength => 25 %>
+    </div>
+
+    <div class ="Form-section">
+      <%= form.submit "Update", class: "Submit-style" %>
+    </div>
+<% end %>
+  </section>
+  </body>
+   <script src="https://kit.fontawesome.com/0d098bd6e3.js" crossorigin="anonymous"></script>
