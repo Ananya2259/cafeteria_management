@@ -84,11 +84,15 @@ class UsersController < ApplicationController
       success = "Your attempt was sucessfull."
     end
 
-    if params[:password].present? && user.authenticate(params[:password])
+    if user.authenticate(params[:password])
       user.update(password: params[:new_password])
       success = "Your attempt was sucessfull."
+    else
+      flash[:error] = "Invalid password"
     end
-    flash[:success] = success
-    redirect_to main_menu_index_path
+    if success != ""
+      flash[:success] = success
+    end
+    redirect_back(fallback_location: main_menu_index_path)
   end
 end
