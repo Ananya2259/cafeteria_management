@@ -38,7 +38,8 @@ class UsersController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
+    CartItem.where(user_id: params[:user_id]).destroy_all
     User.find(params[:user_id]).destroy
     redirect_to users_path
   end
@@ -57,7 +58,8 @@ class UsersController < ApplicationController
       user.update(email: params[:email])
     end
     if params[:address].present?
-      user.update(address: params[:address])
+      address = Address.find_by(user_id: params[:user_id])
+      address.update(address: params[:address])
     end
 
     redirect_to users_path
@@ -71,17 +73,19 @@ class UsersController < ApplicationController
     user = User.find(session[:current_user_id])
     address = Address.where(user_id: user.id).last
     success = ""
-    if params[:name].present?
-      user.update(name: params[:name])
-      success = "Your attempt was sucessfull."
-    end
-    if params[:email].present?
-      user.update(email: params[:email])
-      success = "Your attempt was sucessfull."
-    end
-    if params[:address].present?
-      address.update(address: params[:address])
-      success = "Your attempt was sucessfull."
+    if user && user.authenticate(params[:password])
+      if params[:name].present?
+        user.update(name: params[:name])
+        success = "Your attempt was sucessfull."
+      end
+      if params[:email].present?
+        user.update(email: params[:email])
+        success = "Your attempt was sucessfull."
+      end
+      if params[:address].present?
+        address.update(address: params[:address])
+        success = "Your attempt was sucessfull."
+      end
     end
 
     if user.authenticate(params[:password])

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get "/edit_user" => "users#edit_user", as: :edit_user_detail
   put "/update_user" => "users#update_user", as: :update_user_detail
   get "/add_new_user" => "users#add_user", as: :add_new_user
-  delete "/delete_user" => "users#delete", as: :delete_user
+  delete "/delete_user" => "users#destroy", as: :delete_user
   get "/order_items" => "order_items#create", as: :order_items
   get "/orders_create" => "orders#create", as: :orders
   patch "/orders_update" => "orders#update", as: :orders_update

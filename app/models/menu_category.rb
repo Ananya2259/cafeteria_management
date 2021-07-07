@@ -3,4 +3,5 @@ class MenuCategory < ApplicationRecord
   validates :name, uniqueness: true
   validates :name, length: { minimum: 2 }
   validates :name, presence: true
+  validates :status,presence: true
 end
