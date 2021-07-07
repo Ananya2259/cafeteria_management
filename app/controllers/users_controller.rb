@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :ensure_user_logged_in, except: [:index, :edit_profile]
+  skip_before_action :routes_manager, only: [:create]
 
   def new
     if User.any?

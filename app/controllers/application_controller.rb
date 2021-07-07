@@ -4,13 +4,13 @@ class ApplicationController < ActionController::Base
 
   def routes_manager
     if ["/edit_profile", "/main_menu"].include?(request.path) && current_user.role == "Admin"
-      redirect_to root_path
+      render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
     end
     if ["/users", "/menu_categories"].include?(request.path) && current_user.role == "user"
-      redirect_to root_path
+      render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
     end
-    if ["/edit_profile", "/menu_categories"].include?(request.path) && current_user.role == "clerk"
-      redirect_to root_path
+    if ["/edit_profile", "/menu_categories", "/users"].include?(request.path) && current_user.role == "clerk"
+      render :file => "#{Rails.root}/public/404.html", layout: false, status: :not_found
     end
   end
 
