@@ -1,3 +1,7 @@
+<h1> Hourly Sales report</h1>
+<div class="shadow p-3 mb-5 bg-body rounded">
+<%= line_chart Order.group_by_hour(:created_at).count %>
+</div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

@@ -49,7 +49,7 @@
   </section>
 
 
-  <section style="width:400px;height:480px;margin-left:50px;" class="shadow-lg p-3 mb-5 bg-body rounded sticky-top">
+  <section style="width:400px;height:480px;margin-left:50px;" id="cart_display" class="shadow-lg p-3 mb-5 bg-body rounded" >
       <h1>Cart</h1>
       <% if !@current_user.cart_items.present? %>
          <img src="delivery.gif" style="width:370px ">
@@ -81,12 +81,13 @@
       <% if @current_user.cart_items.present? %>
       <span style="margin-left:100px"><strong> Cart subtotal</strong>(<%= CartItem.where(user_id: session[:current_user_id]).all.count %> item) : </span><span style="color:#B12704;font-weight:700">₹<%= CartItem.cart_total(session[:current_user_id]) %></span><br>
 
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-top:20px;margin-left:260px;">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalcart" style="margin-top:20px;margin-left:260px;">
         Checkout
       </button>
       <% end %>
       <!-- Modal -->
-        <div class="modal fade" id="exampleModal" style=" position:fixed;
+
+        <div class="modal fade" id="exampleModalcart" style=" position:fixed;
   left: 33%;top:10%;width:500px" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
