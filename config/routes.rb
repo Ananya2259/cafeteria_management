@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get "/order_items" => "order_items#create", as: :order_items
   get "/orders_create" => "orders#create", as: :orders
   patch "/orders_update" => "orders#update", as: :orders_update
+  get "/orders_show" => "orders#show", as: :orders_show
   get "/orders_index" => "orders#index", as: :orders_index
   get "/signin" => "sessions#new", as: :new_sessions
   post "/signin" => "sessions#create", as: :sessions

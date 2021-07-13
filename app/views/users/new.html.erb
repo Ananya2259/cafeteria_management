@@ -1,7 +1,7 @@
 <body class = "Signup">
   <h1 class="NewUsers-title">Sign Up</h1>
 <section class="UsersNew">
-    <%= form_with url: users_path, class: "Form-style" do |form| %>
+    <%= form_with url: users_path, class: "Form-style", method: :post do |form| %>
      <div class="Form-section">
        <i class="far fa-user"></i>
        <%= form.text_field :name, class: "Form-input-style", placeholder: "Name" %>

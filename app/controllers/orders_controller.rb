@@ -1,5 +1,10 @@
 class OrdersController < ApplicationController
   def index
+    if params[:from].present? && params[:to].present?
+      render "orders/index", locals: { from: params[:from], to: params[:to] }
+    else
+      render "orders/index", locals: { from: nil, to: nil }
+    end
   end
 
   def create
@@ -12,5 +17,9 @@ class OrdersController < ApplicationController
     order_id = params[:order_id]
     Order.find(order_id).update(status: "Delivered")
     redirect_to orders_index_path
+  end
+
+  def show
+    render "show", locals: { id: params[:id] }
   end
 end

@@ -1,8 +1,7 @@
 class CartItemsController < ApplicationController
   def create
-    # render plain: params[:user_id]
     addtocart = CartItem.new(
-      user_id: params[:user_id],
+      user_id: @current_user.id,
       menu_item_id: params[:menu_item_id],
       price: MenuItem.find(params[:menu_item_id]).price,
       quantity: 1,
