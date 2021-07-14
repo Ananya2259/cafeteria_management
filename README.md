@@ -18,7 +18,8 @@
 !["MenuItems"](https://user-images.githubusercontent.com/77260445/124924237-dc9c4d80-e018-11eb-941b-10e4e3ee5e41.png)
 
 ### Sales report for admin
-!["Report"](https://user-images.githubusercontent.com/77260445/124924286-ef168700-e018-11eb-9345-dedb87a924d3.png)
+!["Report"](https://user-images.githubusercontent.com/77260445/125565933-21b25af3-cb80-4089-8e83-1e3d4f440fc2.png)
+!["Report-with-daterange"](https://user-images.githubusercontent.com/77260445/125566831-6966f81a-f799-488c-a912-05059811cb7f.png)
 
 ### Order details for admin and clerk
 !["order-details"](https://user-images.githubusercontent.com/77260445/124924462-1bca9e80-e019-11eb-9180-911a16f3f745.png)
@@ -30,6 +31,8 @@
 !["items"](https://user-images.githubusercontent.com/77260445/124925673-4ff28f00-e01a-11eb-997f-819ea0aaefd9.png)
 !["items2"](https://user-images.githubusercontent.com/77260445/124925687-52ed7f80-e01a-11eb-9a86-f39e6b673f09.png)
 
+### Customer-Orders
+!["customer-orders"](https://user-images.githubusercontent.com/77260445/125567449-9b9aa6a7-2dbb-4db8-9450-731fc4455820.png)
 
 ### Invoice for user
 !["User_Invoice"](https://user-images.githubusercontent.com/77260445/124925941-9f38bf80-e01a-11eb-958b-0672a9f0b5a9.png)
