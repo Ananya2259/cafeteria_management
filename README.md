@@ -31,7 +31,7 @@
 !["items"](https://user-images.githubusercontent.com/77260445/124925673-4ff28f00-e01a-11eb-997f-819ea0aaefd9.png)
 !["items2"](https://user-images.githubusercontent.com/77260445/124925687-52ed7f80-e01a-11eb-9a86-f39e6b673f09.png)
 
-### Customer-Orders
+### User-Orders
 !["customer-orders"](https://user-images.githubusercontent.com/77260445/125567449-9b9aa6a7-2dbb-4db8-9450-731fc4455820.png)
 
 ### Invoice for user
